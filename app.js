@@ -103,6 +103,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (request, re
     }
   
     if (event.type === 'checkout.session.completed') {
+      console.log(event)
       const session = event.data.object;
       
       const { data: customers, error } = await supabase
