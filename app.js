@@ -104,7 +104,10 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (request, re
   
     if (event.type === 'checkout.session.completed') {
       console.log(event)
-      const session = event.data.object;
+      const session = await stripe.checkout.sessions.retrieve(
+        event.data.object.id, {
+        expand: ['line_items']
+      });
       
       const { data: customers, error } = await supabase
       .from('customers')
