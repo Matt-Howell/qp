@@ -91,7 +91,7 @@ app.post('/billing', async (req, res) => {
 
 app.post('/webhook', express.raw({type: 'application/json'}), async (request, response) => {
     const sig = request.headers['stripe-signature'];
-    let endpointSecret = "whsec_D1SNY4KQk1NvdZzlwp4xdMquJhbcT2Wr"
+    let endpointSecret = process.env.WHSEC
   
     let event;
   
