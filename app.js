@@ -127,7 +127,34 @@ app.post('/search', express.json(), async (req, res) => {
         .update({ searches:creditsLeft })
         .eq("key", apiKey)
         }
-    }
+
+        var first_part = "https://suggestqueries.google.com/complete/search?";
+        var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
+
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+
+        var options = {
+            auth: {
+                username: "brd-customer-hl_7365483f-zone-datacenter_proxy1",
+                password: "oq53nk4imw9m"
+            },
+            host: 'brd.superproxy.io',
+            port: 22225
+        };
+        
+        require('axios-https-proxy-fix').get(url,{
+            proxy: options
+        }).then(function(data){ 
+            let allKeywords = []
+            let toParse = data.data
+            for (let p = 0; p < toParse[1].length; p++) {
+                allKeywords.push(toParse[1][p])
+            }
+            res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
+        },
+        function(err){ console.log(err) 
+        });
+    } else {
 
     var first_part = "https://suggestqueries.google.com/complete/search?";
     var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
@@ -151,10 +178,11 @@ app.post('/search', express.json(), async (req, res) => {
         for (let p = 0; p < toParse[1].length; p++) {
             allKeywords.push(toParse[1][p])
         }
-        res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
+        res.send(JSON.stringify({ meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
      },
     function(err){ console.log(err) 
     });
+    }
 })
 
 app.listen(8080, () => console.log('Running on port 8080'));
