@@ -136,7 +136,7 @@ app.post('/api/search', express.json(), async (req, res) => {
         //}
         //res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
      },
-    function(err){ res.send(err) 
+    function(err){ console.log(err) 
     });
 })
 
