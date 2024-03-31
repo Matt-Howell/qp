@@ -65,7 +65,7 @@ app.post('/search', express.json(), async (req, res) => {
 
     if (!apiKey) {
         if (req.get("X-RapidAPI-Proxy-Secret")) {
-            if (req.get("X-RapidAPI-Proxy-Secret") == "38a37e10-ef8d-11ee-bc8c-cf809c3e1193") {
+            if (req.get("X-RapidAPI-Proxy-Secret") === "38a37e10-ef8d-11ee-bc8c-cf809c3e1193") {
                 rapid = true      
             } else {
                 res.status(403).send("Invalid API key.")
@@ -95,12 +95,12 @@ app.post('/search', express.json(), async (req, res) => {
         return;
     }
 
-    if (!(apiKey) || !(rapid)) {
+    if (!(apiKey) && !(rapid)) {
         res.status(403).send("Invalid API key.")
         return [];
     }
 
-    if (!rapid) {
+    if (rapid === false) {
         const { data:user } = await supabase
         .from('uservals')
         .select('searches')
