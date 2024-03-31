@@ -61,6 +61,21 @@ app.post('/search', express.json(), async (req, res) => {
     let language = req.body.hl || "en"
     let location = req.body.gl || "us"
     let apiKey = req.get("X-API-KEY")
+    let rapid = false
+
+    if (!apiKey) {
+        if (req.get("X-RapidAPI-Proxy-Secret")) {
+            if (req.get("X-RapidAPI-Proxy-Secret") == "38a37e10-ef8d-11ee-bc8c-cf809c3e1193") {
+                rapid = true      
+            } else {
+                res.status(403).send("Invalid API key.")
+                return [];
+            }
+        } else {
+            res.status(403).send("Invalid API key.")
+            return [];
+        }
+    }
 
     location = location.trim().toUpperCase()
     language = language.trim().toLowerCase()
@@ -80,42 +95,45 @@ app.post('/search', express.json(), async (req, res) => {
         return;
     }
 
-    if (!(apiKey)) {
+    if (!(apiKey) || !(rapid)) {
         res.status(403).send("Invalid API key.")
         return [];
     }
-  
-    const { data:user } = await supabase
-    .from('uservals')
-    .select('searches')
-    .eq("key", apiKey)
 
-    if (user.length > 0) {
-        if (!(user[0])) {
+    if (!rapid) {
+        const { data:user } = await supabase
+        .from('uservals')
+        .select('searches')
+        .eq("key", apiKey)
+
+        if (user.length > 0) {
+            if (!(user[0])) {
+                res.status(403).send("Invalid API key.")
+                return [];
+            }
+        } else {
             res.status(403).send("Invalid API key.")
             return [];
         }
-    } else {
-        res.status(403).send("Invalid API key.")
-        return [];
-    }
 
-    let creditsLeft = parseInt(user[0].searches)-1
-  
-    if (user[0].searches < 1) {
-      res.status(403).send("No credits remaining.")
-      return;
-    } else {
-      await supabase
-      .from('uservals')
-      .update({ searches:creditsLeft })
-      .eq("key", apiKey)
+        let creditsLeft = parseInt(user[0].searches)-1
+    
+        if (user[0].searches < 1) {
+        res.status(403).send("No credits remaining.")
+        return;
+        } else {
+        await supabase
+        .from('uservals')
+        .update({ searches:creditsLeft })
+        .eq("key", apiKey)
+        }
     }
 
     var first_part = "https://suggestqueries.google.com/complete/search?";
     var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+
     var options = {
         auth: {
             username: "brd-customer-hl_7365483f-zone-datacenter_proxy1",
