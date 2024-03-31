@@ -145,4 +145,4 @@ app.post('/api/search', express.json(), async (req, res) => {
      }).catch((e) => res.send(e));
 })
 
-app.listen(4242, () => console.log('Running on port 4242'));
+app.listen(8080, () => console.log('Running on port 8080'));
