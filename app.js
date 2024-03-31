@@ -128,7 +128,7 @@ app.post('/api/search', express.json(), async (req, res) => {
     require('axios-https-proxy-fix').get("http://lumtest.com/myip.json",{
         proxy: options
     }).then(function(data){ 
-        res.send(data)
+        res.send(data.data)
         //let allKeywords = []
         //let toParse = data.data
         //for (let p = 0; p < toParse[1].length; p++) {
