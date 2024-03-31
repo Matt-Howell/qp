@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 
 const { createClient } = require('@supabase/supabase-js');
-const axios = require('axios')
 
 const supabaseUrl = "https://mqdckrtdwdmbjybiwbfx.supabase.co"
 const supabaseKey = process.env.SBKEY;
@@ -17,7 +16,7 @@ app.use(cors({
   origin: "*"
 }))
 
-app.post('/api/search', express.json(), async (req, res) => { 
+app.post('/search', express.json(), async (req, res) => { 
     res.set('Access-Control-Allow-Origin', '*')
 
     const countryCodes = [
@@ -125,6 +124,7 @@ app.post('/api/search', express.json(), async (req, res) => {
         host: 'brd.superproxy.io',
         port: 22225
     };
+    
     require('axios-https-proxy-fix').get(url,{
         proxy: options
     }).then(function(data){ 
