@@ -113,7 +113,7 @@ app.post('/api/search', express.json(), async (req, res) => {
       .eq("key", apiKey)
     }
 
-    var first_part = "http://suggestqueries.google.com/complete/search?";
+    var first_part = "https://suggestqueries.google.com/complete/search?";
     var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
@@ -125,16 +125,15 @@ app.post('/api/search', express.json(), async (req, res) => {
         host: 'brd.superproxy.io',
         port: 22225
     };
-    require('axios-https-proxy-fix').get("http://lumtest.com/myip.json",{
+    require('axios-https-proxy-fix').get(url,{
         proxy: options
     }).then(function(data){ 
-        res.send(data.data)
-        //let allKeywords = []
-        //let toParse = data.data
-        //for (let p = 0; p < toParse[1].length; p++) {
-        //    allKeywords.push(toParse[1][p])
-        //}
-        //res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
+        let allKeywords = []
+        let toParse = data.data
+        for (let p = 0; p < toParse[1].length; p++) {
+            allKeywords.push(toParse[1][p])
+        }
+        res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
      },
     function(err){ console.log(err) 
     });
