@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 const { createClient } = require('@supabase/supabase-js');
+const axios = require('axios')
 
 const supabaseUrl = "https://mqdckrtdwdmbjybiwbfx.supabase.co"
 const supabaseKey = process.env.SBKEY;
@@ -10,10 +11,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 app.use(express.json())
 
-const cors = require("cors");
-
-const { HttpsProxyAgent } = require('https-proxy-agent');
-const axios = require('axios');
+const cors = require("cors")
 
 app.use(cors({
   origin: "*"
@@ -115,12 +113,10 @@ app.post('/api/search', express.json(), async (req, res) => {
       .eq("key", apiKey)
     }
 
-    var first_part = "https://suggestqueries.google.com/complete/search?";
+    var first_part = "http://suggestqueries.google.com/complete/search?";
     var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
-    const agent = new HttpsProxyAgent('http://brd-customer-hl_7365483f-zone-datacenter_proxy1:oq53nk4imw9m@brd.superproxy.io:22225')
-
     var options = {
         auth: {
             username: "brd-customer-hl_7365483f-zone-datacenter_proxy1",
@@ -129,12 +125,9 @@ app.post('/api/search', express.json(), async (req, res) => {
         host: 'brd.superproxy.io',
         port: 22225
     };
-    const config = {
-        url: "https://lumtest.com/myip.json",
-        proxy: false,
-        httpsAgent: agent
-    }
-   axios.request(config).then(function(data){ 
+    require('axios-https-proxy-fix').get("http://lumtest.com/myip.json",{
+        proxy: options
+    }).then(function(data){ 
         res.send(data)
         //let allKeywords = []
         //let toParse = data.data
@@ -142,7 +135,9 @@ app.post('/api/search', express.json(), async (req, res) => {
         //    allKeywords.push(toParse[1][p])
         //}
         //res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
-     }).catch((e) => res.send(e));
+     },
+    function(err){ res.send(err) 
+    });
 })
 
 app.listen(8080, () => console.log('Running on port 8080'));
