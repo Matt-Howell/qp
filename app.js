@@ -18,6 +18,7 @@ app.use(cors({
 
 app.post('/search', express.json(), async (req, res) => { 
     res.set('Access-Control-Allow-Origin', '*')
+    res.setCharacterEncoding("utf-8")
 
     const countryCodes = [
         "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ",
@@ -152,6 +153,7 @@ app.post('/search', express.json(), async (req, res) => {
             for (let p = 0; p < toParse[1].length; p++) {
                 allKeywords.push(toParse[1][p])
             }
+          console.log(allKeywords)
             res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
         },
         function(err){ console.log(err) 
