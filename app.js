@@ -144,7 +144,8 @@ app.post('/search', express.json(), async (req, res) => {
         
         require('axios').get(url,{
             proxy: options,
-          responseEncoding: 'utf8'
+          responseEncoding: 'utf8',
+            headers: {'accept-encoding': 'utf8', 'accept-charset': 'utf8'},
         }).then(function(data){ 
             console.log(data.headers)
             let allKeywords = []
