@@ -151,8 +151,9 @@ app.post('/search', express.json(), async (req, res) => {
         }).then(function(data){ 
             let allKeywords = []
             let toParse = data.data
+          console.log(toParse)
             for (let p = 0; p < toParse[1].length; p++) {
-              console.log(toParse[1][p])
+              console.log(toParse[1][p], encodeURI(toParse[1][p]))
                 allKeywords.push(toParse[1][p])
             }
           console.log(allKeywords)
