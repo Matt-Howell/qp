@@ -133,6 +133,7 @@ app.post('/search', express.json(), async (req, res) => {
 
         var first_part = "https://suggestqueries.google.com/complete/search?";
         var url = first_part + 'q=' + encodeURI(keyword) + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
+      console.log(url)
 
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
@@ -151,6 +152,7 @@ app.post('/search', express.json(), async (req, res) => {
             let allKeywords = []
             let toParse = data.data
             for (let p = 0; p < toParse[1].length; p++) {
+              console.log(toParse[1][p])
                 allKeywords.push(toParse[1][p])
             }
           console.log(allKeywords)
