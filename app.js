@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+const iconv = require("iconv-lite")
+
 const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = "https://mqdckrtdwdmbjybiwbfx.supabase.co"
@@ -144,12 +146,16 @@ app.post('/search', express.json(), async (req, res) => {
         
         require('axios').get(url,{
             proxy: options,
-          responseEncoding: 'utf8',
-            headers: {'accept-encoding': 'utf8', 'accept-charset': 'utf8'},
+          responseEncoding: null,
+            headers: {'accept-charset': 'utf8'},
         }).then(function(data){ 
+            const contentTypeHeader = data.headers['content-type'];
+            const charsetMatch = contentTypeHeader.match(/charset=([\w-]+)/i);
+            const charset = charsetMatch[1] || "utf-8";
             console.log(data.headers)
             let allKeywords = []
-            let toParse = JSON.parse(JSON.stringify(data.data))
+            let toParse = iconv.decode(data.data, charset)
+            console.log(toParse)
             for (let p = 0; p < toParse[1].length; p++) {
                 allKeywords.push(toParse[1][p])
             }
@@ -177,7 +183,7 @@ app.post('/search', express.json(), async (req, res) => {
         proxy: options
     }).then(function(data){ 
         let allKeywords = []
-        let toParse = data.data
+        let toParse = iconv.decode(data.data)
         for (let p = 0; p < toParse[1].length; p++) {
             allKeywords.push(toParse[1][p])
         }
