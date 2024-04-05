@@ -146,14 +146,15 @@ app.post('/search', express.json(), async (req, res) => {
         
         require('axios').get(url,{
             proxy: options,
-            headers: {'accept-charset': 'utf8'},
+            responseType: "arraybuffer"
         }).then(function(data){ 
             const contentTypeHeader = data.headers['content-type'];
             const charsetMatch = contentTypeHeader.match(/charset=([\w-]+)/i);
-            const charset = charsetMatch[1].replace(/-/gi, "") || "utf8";
+            const charset = charsetMatch[1] || "utf-8";
             console.log(contentTypeHeader, charsetMatch, charset)
             let allKeywords = []
-            let toParse = iconv.decode(JSON.stringify(data.data), charset)
+            let decoded = iconv.decode(data.data, charset)
+            let toParse = JSON.parse(decoded)
             console.log(toParse)
             for (let p = 0; p < toParse[1].length; p++) {
                 allKeywords.push(toParse[1][p])
