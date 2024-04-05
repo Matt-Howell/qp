@@ -57,7 +57,7 @@ app.post('/search', express.json(), async (req, res) => {
       "yo", "za", "zh", "zu"
     ];
 
-    let keyword = encodeURI(req.body.keyword) || ""
+    let keyword = req.body.keyword || ""
     let language = req.body.hl || "en"
     let location = req.body.gl || "us"
     let apiKey = req.get("X-API-KEY")
@@ -128,8 +128,10 @@ app.post('/search', express.json(), async (req, res) => {
         .eq("key", apiKey)
         }
 
+      console.log(encodeURI(keyword))
+
         var first_part = "https://suggestqueries.google.com/complete/search?";
-        var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
+        var url = first_part + 'q=' + encodeURI(keyword) + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
 
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
@@ -148,7 +150,7 @@ app.post('/search', express.json(), async (req, res) => {
             let allKeywords = []
             let toParse = data.data
             for (let p = 0; p < toParse[1].length; p++) {
-                allKeywords.push(encodeURI(toParse[1][p]))
+                allKeywords.push(toParse[1][p])
             }
             res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
         },
@@ -176,7 +178,7 @@ app.post('/search', express.json(), async (req, res) => {
         let allKeywords = []
         let toParse = data.data
         for (let p = 0; p < toParse[1].length; p++) {
-            allKeywords.push(encodeURI(toParse[1][p]))
+            allKeywords.push(toParse[1][p])
         }
         res.send(JSON.stringify({ meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
      },
