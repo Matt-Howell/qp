@@ -142,10 +142,10 @@ app.post('/search', express.json(), async (req, res) => {
             port: 22225
         };
         
-        require('axios').default.get(url,{
+        require('axios').get(url,{
             proxy: options,
             responseEncoding: 'utf8',
-            headers: {'accept-encoding': '*'}
+            responseType: "json"
         }).then(function(data){ 
             console.log(data.data)
             let allKeywords = []
