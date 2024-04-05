@@ -153,7 +153,8 @@ app.post('/search', express.json(), async (req, res) => {
             const charset = charsetMatch[1] || "utf-8";
             console.log(contentTypeHeader, charsetMatch, charset)
             let allKeywords = []
-            let toParse = iconv.decode(data.data, charset)
+          console.log(JSON.stringify(data.data))
+            let toParse = iconv.decode(JSON.stringify(data.data), charset)
             console.log(toParse)
             for (let p = 0; p < toParse[1].length; p++) {
                 allKeywords.push(toParse[1][p])
