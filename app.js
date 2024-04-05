@@ -146,7 +146,6 @@ app.post('/search', express.json(), async (req, res) => {
         
         require('axios').get(url,{
             proxy: options,
-          responseEncoding: null,
             headers: {'accept-charset': 'utf8'},
         }).then(function(data){ 
             const contentTypeHeader = data.headers['content-type'];
