@@ -57,7 +57,7 @@ app.post('/search', express.json(), async (req, res) => {
       "yo", "za", "zh", "zu"
     ];
 
-    let keyword = req.body.keyword || ""
+    let keyword = encodeURI(req.body.keyword) || ""
     let language = req.body.hl || "en"
     let location = req.body.gl || "us"
     let apiKey = req.get("X-API-KEY")
