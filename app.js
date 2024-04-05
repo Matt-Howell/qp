@@ -147,7 +147,7 @@ app.post('/search', express.json(), async (req, res) => {
             responseType: 'arraybuffer',
             reponseEncoding: 'binary'
         }).then(function(data){ 
-          let newData = data.data.toString('utf-8');
+          let newData = data.data.toString('utf8');
             console.log(newData)
             console.log(data.headers)
             let allKeywords = []
