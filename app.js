@@ -18,7 +18,6 @@ app.use(cors({
 
 app.post('/search', express.json(), async (req, res) => { 
     res.set('Access-Control-Allow-Origin', '*')
-    res.set({ 'content-type': 'application/json; charset=utf-8' })
 
     const countryCodes = [
         "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ",
@@ -129,11 +128,8 @@ app.post('/search', express.json(), async (req, res) => {
         .eq("key", apiKey)
         }
 
-      console.log(encodeURI(keyword))
-
         var first_part = "https://suggestqueries.google.com/complete/search?";
-        var url = first_part + 'q=' + encodeURI(keyword) + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
-      console.log(url)
+        var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
 
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
@@ -146,18 +142,15 @@ app.post('/search', express.json(), async (req, res) => {
             port: 22225
         };
         
-        require('axios-https-proxy-fix').get(url,{
+        require('axios').get(url,{
             proxy: options,
             responseEncoding: 'utf8'
         }).then(function(data){ 
             let allKeywords = []
             let toParse = data.data
-          console.log(toParse)
             for (let p = 0; p < toParse[1].length; p++) {
-              console.log(toParse[1][p], encodeURI(toParse[1][p]))
                 allKeywords.push(toParse[1][p])
             }
-          console.log(allKeywords)
             res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
         },
         function(err){ console.log(err) 
