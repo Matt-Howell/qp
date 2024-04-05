@@ -151,7 +151,7 @@ app.post('/search', express.json(), async (req, res) => {
             const contentTypeHeader = data.headers['content-type'];
             const charsetMatch = contentTypeHeader.match(/charset=([\w-]+)/i);
             const charset = charsetMatch[1] || "utf-8";
-            console.log(data.headers)
+            console.log(contentTypeHeader, charsetMatch, charset)
             let allKeywords = []
             let toParse = iconv.decode(data.data, charset)
             console.log(toParse)
