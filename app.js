@@ -144,10 +144,10 @@ app.post('/search', express.json(), async (req, res) => {
         
         require('axios').get(url,{
             proxy: options,
-            responseEncoding: 'utf8',
             responseType: "json"
         }).then(function(data){ 
             console.log(data.data)
+            console.log(data.headers)
             let allKeywords = []
             let toParse = data.data
             for (let p = 0; p < toParse[1].length; p++) {
