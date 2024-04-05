@@ -148,7 +148,7 @@ app.post('/search', express.json(), async (req, res) => {
             let allKeywords = []
             let toParse = data.data
             for (let p = 0; p < toParse[1].length; p++) {
-                allKeywords.push(toParse[1][p])
+                allKeywords.push(encodeURI(toParse[1][p]))
             }
             res.send(JSON.stringify({ account: { credits: creditsLeft, api_key:apiKey }, meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
         },
@@ -176,7 +176,7 @@ app.post('/search', express.json(), async (req, res) => {
         let allKeywords = []
         let toParse = data.data
         for (let p = 0; p < toParse[1].length; p++) {
-            allKeywords.push(toParse[1][p])
+            allKeywords.push(encodeURI(toParse[1][p]))
         }
         res.send(JSON.stringify({ meta: { gl:location, hl:language, keyword:keyword }, data: { keywords:allKeywords } }))
      },
