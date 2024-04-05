@@ -147,7 +147,8 @@ app.post('/search', express.json(), async (req, res) => {
         };
         
         require('axios-https-proxy-fix').get(url,{
-            proxy: options
+            proxy: options,
+            responseEncoding: 'utf8'
         }).then(function(data){ 
             let allKeywords = []
             let toParse = data.data
