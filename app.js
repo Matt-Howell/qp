@@ -137,8 +137,8 @@ app.post('/search', express.json(), async (req, res) => {
 
         var options = {
             auth: {
-                username: "brd-customer-hl_7365483f-zone-datacenter_proxy1",
-                password: "oq53nk4imw9m"
+                username: "brd-customer-hl_cac6169b-zone-datacenter_proxy1",
+                password: "pj4qw7h1fe14"
             },
             host: 'brd.superproxy.io',
             port: 22225
@@ -170,14 +170,14 @@ app.post('/search', express.json(), async (req, res) => {
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
-    var options = {
-        auth: {
-            username: "brd-customer-hl_7365483f-zone-datacenter_proxy1",
-            password: "oq53nk4imw9m"
-        },
-        host: 'brd.superproxy.io',
-        port: 22225
-    };
+        var options = {
+            auth: {
+                username: "brd-customer-hl_cac6169b-zone-datacenter_proxy1",
+                password: "pj4qw7h1fe14"
+            },
+            host: 'brd.superproxy.io',
+            port: 22225
+        };
     
     require('axios-https-proxy-fix').get(url,{
         proxy: options
