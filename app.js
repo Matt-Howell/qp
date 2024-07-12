@@ -130,7 +130,7 @@ app.post('/search', express.json(), async (req, res) => {
         .eq("key", apiKey)
         }
 
-        var first_part = "https://suggestqueries.google.com/complete/search?";
+        var first_part = "https://www.google.com/complete/search?";
         var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
 
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
@@ -165,7 +165,7 @@ app.post('/search', express.json(), async (req, res) => {
         });
     } else {
 
-    var first_part = "https://suggestqueries.google.com/complete/search?";
+    var first_part = "https://www.google.com/complete/search?";
     var url = first_part + 'q=' + keyword + '&hl=' + language + '&gl=' + location + "&client=chrome&_=" + ('' + Math.random()).replace(/\D/g, "");
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
