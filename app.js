@@ -145,7 +145,6 @@ app.post('/search', express.json(), async (req, res) => {
         };
         
         require('axios').get(url,{
-            proxy: options,
             responseType: "arraybuffer"
         }).then(function(data){ 
             const contentTypeHeader = data.headers['content-type'];
@@ -179,9 +178,7 @@ app.post('/search', express.json(), async (req, res) => {
             port: 22225
         };
     
-    require('axios-https-proxy-fix').get(url,{
-        proxy: options
-    }).then(function(data){ 
+    require('axios-https-proxy-fix').get(url).then(function(data){ 
         let allKeywords = []
         let toParse = iconv.decode(data.data)
         for (let p = 0; p < toParse[1].length; p++) {
