@@ -5,7 +5,7 @@ const iconv = require("iconv-lite")
 
 const { createClient } = require('@supabase/supabase-js');
 
-const supabaseUrl = "https://mqdckrtdwdmbjybiwbfx.supabase.co"
+const supabaseUrl = ""
 const supabaseKey = process.env.SBKEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey)
@@ -67,7 +67,7 @@ app.post('/search', express.json(), async (req, res) => {
 
     if (!apiKey) {
         if (req.get("X-RapidAPI-Proxy-Secret")) {
-            if (req.get("X-RapidAPI-Proxy-Secret") === "38a37e10-ef8d-11ee-bc8c-cf809c3e1193") {
+            if (req.get("X-RapidAPI-Proxy-Secret") === "") {
                 rapid = true      
             } else {
                 res.status(403).send("Invalid API key.")
@@ -137,10 +137,10 @@ app.post('/search', express.json(), async (req, res) => {
 
         var options = {
             auth: {
-                username: "brd-customer-hl_cac6169b-zone-datacenter_proxy1",
-                password: "pj4qw7h1fe14"
+                username: "",
+                password: ""
             },
-            host: 'brd.superproxy.io',
+            host: '',
             port: 22225
         };
         
@@ -171,10 +171,10 @@ app.post('/search', express.json(), async (req, res) => {
 
         var options = {
             auth: {
-                username: "brd-customer-hl_cac6169b-zone-datacenter_proxy1",
-                password: "pj4qw7h1fe14"
+                username: "",
+                password: ""
             },
-            host: 'brd.superproxy.io',
+            host: '',
             port: 22225
         };
     
